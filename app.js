@@ -68,7 +68,7 @@ $(function(){
 	$('.shopping-list').on("click",".shopping-item-toggle", function(event){
 		event.stopPropagation();
 		updCheck(state);
-		
+		render(state);
 	});
 
 	//remove section when 'del' button is pressed
