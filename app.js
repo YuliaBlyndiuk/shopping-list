@@ -20,13 +20,11 @@ function updCheck(state){
 		if (state.itemList[i].check === false) {
 		console.log('I work', state);
 		return state.itemList[i].check = true;
-		// $('.shopping-item').css('text-decoration', 'line-through');
-		// }
-		// 	else if (state.itemList[i].check === true) {
-		// 		console.log('I also work');
-		// 		$('.shopping-item').css('text-decoration', 'none');
-			
 		}
+			else if (state.itemList[i].check === true) {
+			return state.itemList[i].check = false;
+			}
+		
 	}
 
 }
@@ -38,13 +36,15 @@ function render(state){
 	});
 	$('.shopping-list').html(listDiv);
 	console.log('current object looks like', state);
-	// for (var i = 0; i < state.itemList.length; i++){ 
-	// 	if (state.itemList[i].check = true) {
-	// 		$('.shopping-item').css('text-decoration', 'line-through');
+	for (var i = 0; i < state.itemList.length; i++){ 
+		if (state.itemList[i].check = true) {
+			$('.shopping-item').css('text-decoration', 'line-through');
 			
-	// 	}
-	// }
-		// else if 
+		}
+		else if (state.itemList[i].check = false) {
+			$('.shopping-item').css('text-decoration', 'none');
+		}
+	}
 }
 
 
@@ -69,6 +69,7 @@ $(function(){
 		event.stopPropagation();
 		updCheck(state);
 		render(state);
+		
 	});
 
 	//remove section when 'del' button is pressed
