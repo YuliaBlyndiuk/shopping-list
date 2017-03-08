@@ -32,19 +32,14 @@ function updCheck(state){
 //Render 
 function render(state){
 	var listDiv = state.itemList.map(function(whatever){
-		return '<li><span class="shopping-item">' + whatever.name + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
+		var style = 'style="text-decoration:none"';
+		if (whatever.check === true){
+			style = 'style="text-decoration:line-through"'
+		} 
+		return '<li><span class="shopping-item" '+style +'>' + whatever.name + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
 	});
 	$('.shopping-list').html(listDiv);
 	console.log('current object looks like', state);
-	for (var i = 0; i < state.itemList.length; i++){ 
-		if (state.itemList[i].check = true) {
-			$('.shopping-item').css('text-decoration', 'line-through');
-			
-		}
-		else if (state.itemList[i].check = false) {
-			$('.shopping-item').css('text-decoration', 'none');
-		}
-	}
 }
 
 
