@@ -38,7 +38,7 @@ function removeItem(state){
 
 //Render 
 function render(state){
-	var listDiv = state.itemList.map(function(whatever){
+	var listDiv = state.itemList.map(function(whatever, index){
 		var style = 'style="text-decoration:none"';
 		if (whatever.check === true){
 			style = 'style="text-decoration:line-through"'
@@ -46,7 +46,8 @@ function render(state){
 		else if (whatever.remove === true){
 			$('.shopping-list').hide();
 		}
-		return '<li><span class="shopping-item" '+style +'>' + whatever.name + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
+
+		return '<li><span class="shopping-item" '+style + 'data-list-item-id="' + index +"'>' + whatever.name + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
 	});
 	$('.shopping-list').html(listDiv);
 	//console.log('current object looks like', state);
@@ -70,6 +71,7 @@ $(function(){
 	
 	//check an item after the button is pressed
 	$('.shopping-list').on("click",".shopping-item-toggle", function(event){
+		console.log($(this));
 		event.stopPropagation();
 		console.log('check button has been clicked', state);
 		updCheck(state);
