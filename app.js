@@ -4,7 +4,7 @@ var state = {
 };
 
 function updList(state, item){
-	state.itemList.push({name: item, check: false});
+	state.itemList.push({name: item, check: false, remove: false});
 }
 
 // state = {
@@ -13,20 +13,27 @@ function updList(state, item){
 // 		check: false
 // 	 }]
 // 	}
-// After:
 function updCheck(state){
 	//looping through the array of items that are objects
 	for (var i = 0; i < state.itemList.length; i++){ 
 		if (state.itemList[i].check === false) {
-		console.log('I work', state);
-		return state.itemList[i].check = true;
+		//console.log('I work', state);
+		// return 
+		state.itemList[i].check = true;
 		}
 			else if (state.itemList[i].check === true) {
 			return state.itemList[i].check = false;
 			}
-		
 	}
+}
 
+function removeItem(state){
+	for (var i = 0; i < state.itemList.length; i++){
+		if (state.itemList[i].remove === false){
+			console.log('I work', state);
+			return state.itemList[i].remove = true;	
+		}
+	}
 }
 
 //Render 
@@ -36,12 +43,14 @@ function render(state){
 		if (whatever.check === true){
 			style = 'style="text-decoration:line-through"'
 		} 
+		else if (whatever.remove === true){
+			$('.shopping-list').hide();
+		}
 		return '<li><span class="shopping-item" '+style +'>' + whatever.name + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
 	});
 	$('.shopping-list').html(listDiv);
-	console.log('current object looks like', state);
+	//console.log('current object looks like', state);
 }
-
 
 //-------------------------------------------------------------------
 
@@ -62,16 +71,19 @@ $(function(){
 	//check an item after the button is pressed
 	$('.shopping-list').on("click",".shopping-item-toggle", function(event){
 		event.stopPropagation();
+		console.log('check button has been clicked', state);
 		updCheck(state);
 		render(state);
 		
 	});
 
 	//remove section when 'del' button is pressed
-	// $('.shopping-list').on("click",".shopping-item-delete", function(){
-	// 	//console.log('I have been clicked');
-	// 	removeItem(state);
-	// });
+	$('.shopping-list').on("click",".shopping-item-delete", function(event){
+		console.log('delete button has been clicked', state);
+		event.stopPropagation();
+		removeItem(state)
+		render(state);
+	});
 
 
 	// Step 1: Initial render
