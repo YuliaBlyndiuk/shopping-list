@@ -13,44 +13,43 @@ function updList(state, item){
 // 		check: false
 // 	 }]
 // 	}
-function updCheck(state){
-	//looping through the array of items that are objects
-	for (var i = 0; i < state.itemList.length; i++){ 
-		if (state.itemList[i].check === false) {
-		//console.log('I work', state);
-		// return 
-		state.itemList[i].check = true;
-		}
-			else if (state.itemList[i].check === true) {
-			return state.itemList[i].check = false;
-			}
+function updCheck(state, index){
+	console.log('state is', state);
+	if (state.itemList[index].check === false){
+		state.itemList[index].check = true;
+	}
+	else if (state.itemList[index].check === true){
+		state.itemList[index].check = false;
 	}
 }
 
-function removeItem(state){
-	for (var i = 0; i < state.itemList.length; i++){
-		if (state.itemList[i].remove === false){
-			console.log('I work', state);
-			return state.itemList[i].remove = true;	
-		}
+function removeItem(state, index){
+	if (state.itemList[index].remove === false){
+		state.itemList[index].remove = true;
+	}
+	else if (state.itemList[index].remove === true){
+		state.itemList[index].remove = false;
 	}
 }
 
 //Render 
 function render(state){
-	var listDiv = state.itemList.map(function(whatever, index){
+	var listDiv = state.itemList.map(function(item, index){
 		var style = 'style="text-decoration:none"';
-		if (whatever.check === true){
+		if (state.itemList[index].check === true){
 			style = 'style="text-decoration:line-through"'
 		} 
-		else if (whatever.remove === true){
-			$('.shopping-list').hide();
+
+		console.log(state.itemList[index].remove);
+		if (state.itemList[index].remove === true){
+			console.log('removed', index);
+			return;
 		}
 
-		return '<li><span class="shopping-item" '+style + 'data-list-item-id="' + index +"'>' + whatever.name + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
+		// <li data-list-item-id="1"
+		return '<li data-list-item-id="' + index + '"><span class="shopping-item"' + style + '>' + item.name + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
 	});
 	$('.shopping-list').html(listDiv);
-	//console.log('current object looks like', state);
 }
 
 //-------------------------------------------------------------------
@@ -71,10 +70,10 @@ $(function(){
 	
 	//check an item after the button is pressed
 	$('.shopping-list').on("click",".shopping-item-toggle", function(event){
-		console.log($(this));
-		event.stopPropagation();
-		console.log('check button has been clicked', state);
-		updCheck(state);
+		event.stopPropagation(); 
+		var index = $(this).closest("li").attr('data-list-item-id');
+		console.log('index is', index);
+		updCheck(state, index);
 		render(state);
 		
 	});
@@ -83,7 +82,8 @@ $(function(){
 	$('.shopping-list').on("click",".shopping-item-delete", function(event){
 		console.log('delete button has been clicked', state);
 		event.stopPropagation();
-		removeItem(state)
+		var index = $(this).closest("li").attr('data-list-item-id');
+		removeItem(state, index);
 		render(state);
 	});
 
